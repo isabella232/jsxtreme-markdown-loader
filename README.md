@@ -1,5 +1,7 @@
 # md-react-transformer-loader
 
+[![Build Status](https://travis-ci.org/mapbox/md-react-transformer-loader.svg?branch=master)](https://travis-ci.org/mapbox/md-react-transformer-loader)
+
 Webpack loader to transform Markdown with interpolated JS and JSX into React components.
 
 Runs files through the `mdToComponentModule` function of [md-react-transformer](https://github.com/mapbox/md-react-transformer).
