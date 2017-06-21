@@ -11,14 +11,12 @@ describe('mdReactTransformerLoader', () => {
   let mockOptions;
 
   beforeEach(() => {
-    callback = jest.fn();
     mockContext = {
-      async: jest.fn(() => callback),
       loader,
       resource: 'mockResource'
     };
     mockOptions = {};
-    transformResult = Promise.resolve('mockResult');
+    transformResult = 'mockResult';
     jest.spyOn(loaderUtils, 'getOptions').mockReturnValue(mockOptions);
     jest.spyOn(mdReactTransformer, 'mdToComponentModule').mockReturnValue(transformResult);
   });
@@ -28,51 +26,39 @@ describe('mdReactTransformerLoader', () => {
     mdReactTransformer.mdToComponentModule.mockRestore();
   });
 
-  test('registers as async', () => {
-    return mockContext.loader('mockMarkdown').then(() => {
-      expect(mockContext.async).toHaveBeenCalledTimes(1);
-    });
-  });
-
   test('gets options', () => {
-    return mockContext.loader('mockMarkdown').then(() => {
-      expect(loaderUtils.getOptions).toHaveBeenCalledTimes(1);
-      expect(loaderUtils.getOptions).toHaveBeenCalledWith(mockContext);
-    });
+    mockContext.loader('mockMarkdown');
+    expect(loaderUtils.getOptions).toHaveBeenCalledTimes(1);
+    expect(loaderUtils.getOptions).toHaveBeenCalledWith(mockContext);
   });
 
   test('passes arguments to mdToComponentModule', () => {
-    return mockContext.loader('mockMarkdown').then(() => {
-      expect(mdReactTransformer.mdToComponentModule).toHaveBeenCalledTimes(1);
-      expect(mdReactTransformer.mdToComponentModule).toHaveBeenCalledWith('mockMarkdown', mockOptions);
-    });
+    mockContext.loader('mockMarkdown');
+    expect(mdReactTransformer.mdToComponentModule).toHaveBeenCalledTimes(1);
+    expect(mdReactTransformer.mdToComponentModule).toHaveBeenCalledWith('mockMarkdown', mockOptions);
   });
 
   test('calls the callback with the results', () => {
-    return mockContext.loader('mockMarkdown').then(() => {
-      expect(callback).toHaveBeenCalledTimes(1);
-      expect(callback).toHaveBeenCalledWith(null, 'mockResult');
-    });
+    const result = mockContext.loader('mockMarkdown');
+    expect(result).toBe('mockResult');
   });
 
   test('passes errors to the callback', () => {
-    mdReactTransformer.mdToComponentModule.mockReturnValue(Promise.reject('mockError'));
-    return mockContext.loader('mockMarkdown').then(() => {
-      expect(callback).toHaveBeenCalledTimes(1);
-      expect(callback).toHaveBeenCalledWith('mockError');
+    mdReactTransformer.mdToComponentModule.mockImplementation(() => {
+      throw new Error('mockError');
     });
+    expect(() => mockContext.loader('mockMarkdown')).toThrow('mockError');
   });
 
   test('getWrapper function ends up providing options.wrapper', () => {
     const getWrapper = jest.fn(() => 'mockWrapper');
     loaderUtils.getOptions.mockReturnValue({ getWrapper });
-    return mockContext.loader('mockMarkdown').then(() => {
-      expect(getWrapper).toHaveBeenCalledTimes(1);
-      expect(getWrapper).toHaveBeenCalledWith('mockResource');
-      expect(mdReactTransformer.mdToComponentModule).toHaveBeenCalledTimes(1);
-      expect(mdReactTransformer.mdToComponentModule).toHaveBeenCalledWith('mockMarkdown', {
-        wrapper: 'mockWrapper'
-      });
+    mockContext.loader('mockMarkdown');
+    expect(getWrapper).toHaveBeenCalledTimes(1);
+    expect(getWrapper).toHaveBeenCalledWith('mockResource');
+    expect(mdReactTransformer.mdToComponentModule).toHaveBeenCalledTimes(1);
+    expect(mdReactTransformer.mdToComponentModule).toHaveBeenCalledWith('mockMarkdown', {
+      wrapper: 'mockWrapper'
     });
   });
 });

@@ -9,8 +9,5 @@ module.exports = function(source) {
     options.wrapper = options.getWrapper(this.resource);
     delete options.getWrapper;
   }
-  const callback = this.async();
-  return mdReactTransformer.mdToComponentModule(source, options).then(result => {
-    callback(null, result);
-  }).catch(callback);
+  return mdReactTransformer.mdToComponentModule(source, options);
 };
