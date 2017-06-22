@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/mapbox/jsxtreme-markdown-loader.svg?branch=master)](https://travis-ci.org/mapbox/jsxtreme-markdown-loader)
 
+🚧 🚧 **EXPERIMENTAL! WORK IN PROGRESS!** 🚧 🚧
+
 Webpack loader to transform Markdown with interpolated JS and JSX into React components.
 
 Runs files through the `toComponentModule` function of [jsxtreme-markdown](https://github.com/mapbox/jsxtreme-markdown).
