@@ -1,7 +1,7 @@
 'use strict';
 
 const loaderUtils = require('loader-utils');
-const mdReactTransformer = require('@mapbox/md-react-transformer');
+const jsxtremeMarkdown = require('@mapbox/jsxtreme-markdown');
 
 module.exports = function(source) {
   const options = loaderUtils.getOptions(this) || {};
@@ -9,5 +9,5 @@ module.exports = function(source) {
     options.wrapper = options.getWrapper(this.resource);
     delete options.getWrapper;
   }
-  return mdReactTransformer.mdToComponentModule(source, options);
+  return jsxtremeMarkdown.toComponentModule(source, options);
 };
