@@ -1,4 +1,4 @@
-# jsxtreme-markdown-loader
+# @mapbox/jsxtreme-markdown-loader
 
 [![Build Status](https://travis-ci.org/mapbox/jsxtreme-markdown-loader.svg?branch=master)](https://travis-ci.org/mapbox/jsxtreme-markdown-loader)
 
